@@ -27,7 +27,7 @@ export function IssuesContextProvider({ children }: IssuesContextProviderProps) 
     const [userProfile, setUserProfile] = useState<UserProfile>({} as UserProfile)
 
     async function searchIssues(data: string) {
-        const username = 'diego3g'
+        const username = 'pedro4r'
         const response = await apiIssues.get('issues', {
             params: {
                 // q: `${data} repo:josepholiveira/${data}`
@@ -43,7 +43,7 @@ export function IssuesContextProvider({ children }: IssuesContextProviderProps) 
     }
 
     const getUserProfile = useCallback(async () => {
-        const response = await api.get('users/josepholiveira');
+        const response = await api.get('users/pedro4r');
 
         const userProfile = {
             avatarUrl: response.data.avatar_url,

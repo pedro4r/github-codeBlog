@@ -21,14 +21,14 @@ export const Avatar = styled.div`
     img {
         object-fit: cover;
         width: 100%;
-        height: auto;
+        height: 100%;
     }
-
 `
 
 export const ProfileInfo = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
 
     p {
         color: ${(props => props.theme['gray-400'])};
@@ -72,6 +72,7 @@ export const GitHubInfo = styled.div`
     display: flex;
     flex-direction: row;
     gap: 1.5rem;
+    margin-top: auto;
 `
 
 export const Info = styled.div`
@@ -79,6 +80,14 @@ export const Info = styled.div`
     flex-direction: row;
     align-items: center;
     gap: 0.5rem;
+
+    span {
+        color: ${(props => props.theme['gray-200'])}
+    }
+
+    svg {
+        color: ${(props => props.theme['gray-500'])}
+    }
 `
 
 export const FormContainer = styled.div`
