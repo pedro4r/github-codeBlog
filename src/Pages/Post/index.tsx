@@ -1,41 +1,81 @@
 import { ArrowSquareOut, Buildings, CaretLeft, GithubLogo, Users } from "phosphor-react";
-import { GitHubInfo, ButtonsContainer, PostContainer, Info } from "./styles";
+import { GitHubInfo, ButtonsContainer, Info, PostHeader, PostContainer, PostBody } from "./styles";
+import { Link, useParams } from "react-router-dom";
+import { useContext } from "react";
+import { IssuesContext } from "../../context/IssuesContext";
+import { formatDistanceToNowStrict } from "date-fns";
+import { enUS } from "date-fns/locale";
+import ReactMarkdown from 'react-markdown'
 
 export function Post() {
-    return (
-        <PostContainer>
 
-            <ButtonsContainer>
-                <a href="" target="_blank">
+    const { postId } = useParams();
+    const { posts } = useContext(IssuesContext)
 
-                    <CaretLeft size={14} weight="bold" />
-                    <span>BACK</span>
-                </a>
-                <a href="" target="_blank">
-                    <span>GITHUB</span>
-                    <ArrowSquareOut size={14} weight="bold" />
-                </a>
-            </ButtonsContainer>
+    const currentPost = posts.find(item => item.id === Number(postId));
 
-            <strong>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit
-            </strong>
+    if (currentPost) {
+        const distanceDate = formatDistanceToNowStrict(
+            new Date(currentPost.created_at), {
+            locale: enUS,
+            addSuffix: true,
+        });
+        return (
 
-            <GitHubInfo>
-                <Info>
-                    <GithubLogo size={18} weight="fill" />
-                    <span>Lorem ipsum dolor sit amet</span>
-                </Info>
-                <Info>
-                    <Buildings size={18} weight="fill" />
-                    <span>Amet</span>
-                </Info>
-                <Info>
-                    <Users size={18} weight="fill" />
-                    <span>seguidores</span>
-                </Info>
-            </GitHubInfo>
+            <PostContainer>
+                <PostHeader>
 
-        </PostContainer>
-    )
+                    <ButtonsContainer>
+                        <Link to='/'>
+
+                            <CaretLeft size={14} weight="bold" />
+                            <span>BACK</span>
+                        </Link>
+                        <a href={currentPost.html_url} target="_blank">
+                            <span>GITHUB</span>
+                            <ArrowSquareOut size={14} weight="bold" />
+                        </a>
+                    </ButtonsContainer>
+
+                    <strong>
+                        {currentPost.title}
+                    </strong>
+
+                    <GitHubInfo>
+                        <Info>
+                            <GithubLogo size={18} weight="fill" />
+                            <span>{currentPost.user.login}</span>
+                        </Info>
+                        <Info>
+                            <Buildings size={18} weight="fill" />
+                            <span>{distanceDate}</span>
+                        </Info>
+                        <Info>
+                            <Users size={18} weight="fill" />
+                            <span>{currentPost.comments} comments</span>
+                        </Info>
+                    </GitHubInfo>
+                </PostHeader>
+
+                <PostBody>
+
+                    <ReactMarkdown>{currentPost.body}</ReactMarkdown>
+
+                </PostBody>
+
+            </PostContainer >
+        )
+    }
+
+    else {
+        return (
+            <PostContainer>
+
+                <h1>Post doesn't exist</h1>
+
+            </PostContainer>
+        )
+    }
+
+
 }

@@ -5,6 +5,9 @@ import { useForm } from "react-hook-form";
 import { useContext } from "react";
 import { IssuesContext } from "../../context/IssuesContext";
 import { ArrowSquareOut, Buildings, GithubLogo, Users } from "phosphor-react";
+import { formatDistanceToNow, formatDistanceToNowStrict } from "date-fns";
+import { enUS } from "date-fns/locale";
+import { Link } from "react-router-dom";
 
 const searchFormSchema = zod.object({
     query: zod.string(),
@@ -14,12 +17,11 @@ type SearchFormInputs = zod.infer<typeof searchFormSchema>
 
 export function Home() {
 
-    const { searchIssues, userProfile } = useContext(IssuesContext)
+    const { searchIssues, userProfile, posts } = useContext(IssuesContext)
 
     const {
         register,
         handleSubmit,
-        formState: { isSubmitting }
     } = useForm<SearchFormInputs>({
         resolver: zodResolver(searchFormSchema)
     });
@@ -72,7 +74,7 @@ export function Home() {
                 <form onChange={handleSubmit(handleSearchTransactions)}>
                     <TitleContainer>
                         <strong>Publishments</strong>
-                        <span>6 publishment</span>
+                        <span>{posts.length} publishment</span>
                     </TitleContainer>
                     <input
                         type="text"
@@ -81,16 +83,39 @@ export function Home() {
                 </form>
 
                 <PostsList>
-                    <Post>
-                        <header>
-                            <strong>JavaScript data types and data structures</strong>
-                            <span>Há 1 dia</span>
-                        </header>
-                        <p>Programming languages all have built-in data structures,
-                            but these often differ from one language to another.
-                            This article attempts to list the built-in data structures
-                            available in </p>
-                    </Post>
+                    {[posts.map(post => {
+
+                        const distanceDate = formatDistanceToNowStrict(
+                            new Date(post.created_at), {
+                            locale: enUS,
+                            addSuffix: true,
+                        });
+
+                        const title = post.title
+                            .slice(0, 55)
+                            .split(' ')
+                            .slice(0, -1)
+                            .join(' ');
+
+                        const body = post.body
+                            .slice(0, 185)
+                            .split(' ')
+                            .slice(0, -1)
+                            .join(' ');
+
+                        return (
+                            <Link key={post.id} to={`/post/${post.id}`}>
+                                <Post >
+                                    <header>
+                                        <strong>{title}</strong>
+                                        <span>{distanceDate}</span>
+                                    </header>
+                                    <p>{body}</p>
+                                </Post>
+                            </Link>
+
+                        )
+                    })]}
                 </PostsList>
             </FormContainer>
         </div>

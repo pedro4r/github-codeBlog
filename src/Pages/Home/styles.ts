@@ -134,6 +134,11 @@ export const PostsList = styled.div`
     grid-template-columns: repeat(auto-fit, 26rem);
     grid-gap: 2rem;
     margin-top: 3rem;
+    margin-bottom: 3rem;
+
+    a {
+        text-decoration: none;
+    }
 `
 
 export const Post = styled.div`
@@ -142,12 +147,21 @@ export const Post = styled.div`
     justify-content: justify-content;
     gap: 1.25rem;
     padding: 2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     background-color: ${(props => props.theme['gray-700'])};
 
     border-radius: 10px;
+    border: 1px solid transparent;
+
     height: 16rem;
     width: 26rem;
+
+
+    &:hover {
+        border: 1px solid ${(props => props.theme['gray-300'])}
+    }
 
     header {
         display: flex;
@@ -156,9 +170,13 @@ export const Post = styled.div`
         gap: 1rem;
 
         strong {
-            width: 17rem;
+            width: 15rem;
             font-size: 1.25rem;
             color: ${(props => props.theme['white'])};
+
+            &::after {
+            content: '...'
+        }
         }
 
         span {
@@ -169,6 +187,9 @@ export const Post = styled.div`
 
     p {
         color: ${(props => props.theme['gray-300'])};
+        &::after {
+            content: '...'
+        }
     }
     
 `

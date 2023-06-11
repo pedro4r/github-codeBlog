@@ -5,6 +5,12 @@ export const PostContainer = styled.div`
     flex-direction: column;
     gap: 1.25rem;
     margin-top: 13rem;
+`
+
+export const PostHeader = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
 
     background: ${(props => props.theme['gray-800'])};
     box-shadow: 0px 2px 28px ${(props => props.theme['gray-1000'])};
@@ -61,6 +67,14 @@ export const Info = styled.div`
     gap: 0.5rem;
 
     span{
-        color: ${(props => props.theme['white'])}
+        color: ${(props => props.theme['gray-300'])}
     }
+
+    svg {
+        color: ${(props => props.theme['gray-500'])}
+    }
+`
+
+export const PostBody = styled.div`
+    color: ${(props => props.theme['gray-300'])}
 `

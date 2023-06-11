@@ -3,6 +3,7 @@ import { api, apiIssues } from "../lid/axios";
 
 interface IssuesContextType {
     userProfile: UserProfile
+    posts: Posts[]
     searchIssues: (query: string) => void;
 }
 
@@ -16,6 +17,18 @@ interface UserProfile {
     html_url: string
 }
 
+interface Posts {
+    id: number
+    title: string
+    body: string
+    html_url: string
+    created_at: string;
+    comments: number
+    user: {
+        login: string
+    }
+}
+
 interface IssuesContextProviderProps {
     children: ReactNode;
 }
@@ -25,22 +38,22 @@ export const IssuesContext = createContext({} as IssuesContextType);
 export function IssuesContextProvider({ children }: IssuesContextProviderProps) {
 
     const [userProfile, setUserProfile] = useState<UserProfile>({} as UserProfile)
+    const [posts, setPosts] = useState<Posts[]>([])
 
-    async function searchIssues(data: string) {
-        const username = 'pedro4r'
-        const response = await apiIssues.get('issues', {
-            params: {
-                // q: `${data} repo:josepholiveira/${data}`
-                // q: `${data} repo:${userName}/${data}`
-                // q: `${data}%20repo:rocketseat-education/reactjs-github-blog-challenge`
-                // q: `user:${username} + text: ${data}`
-                q: `${data} repo:${username}/faladev`
-                // q: `is: issue is: open author: ${username} ${data}`,
-            }
-        })
+    async function searchIssues(data?: string) {
+        const params: { q: string } = {
+            q: ""
+        };
 
-        console.log(response.data);
+        if (data !== undefined) {
+            params.q = `${data} repo:pedro4r/github-codeBlog`;
+        } else {
+            params.q = `repo:pedro4r/github-codeBlog`;
+        }
+        const response = await apiIssues.get('issues', { params });
+        setPosts(response.data.items);
     }
+
 
     const getUserProfile = useCallback(async () => {
         const response = await api.get('users/pedro4r');
@@ -60,13 +73,15 @@ export function IssuesContextProvider({ children }: IssuesContextProviderProps) 
 
     useEffect(() => {
         getUserProfile();
+        searchIssues();
     }, [getUserProfile])
 
     return (
         <IssuesContext.Provider
             value={{
                 userProfile,
-                searchIssues
+                searchIssues,
+                posts
             }}>
             {children}
         </IssuesContext.Provider>
