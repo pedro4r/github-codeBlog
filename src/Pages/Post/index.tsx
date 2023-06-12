@@ -1,11 +1,13 @@
 import { ArrowSquareOut, Buildings, CaretLeft, GithubLogo, Users } from "phosphor-react";
-import { GitHubInfo, ButtonsContainer, Info, PostHeader, PostContainer, PostBody } from "./styles";
+import { GitHubInfo, ButtonsContainer, Info, PostHeader, PostContainer, PostBody, MarkDownContent } from "./styles";
 import { Link, useParams } from "react-router-dom";
 import { useContext } from "react";
 import { IssuesContext } from "../../context/IssuesContext";
 import { formatDistanceToNowStrict } from "date-fns";
 import { enUS } from "date-fns/locale";
-import ReactMarkdown from 'react-markdown'
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { solarizedlight } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 export function Post() {
 
@@ -20,6 +22,7 @@ export function Post() {
             locale: enUS,
             addSuffix: true,
         });
+
         return (
 
             <PostContainer>
@@ -58,9 +61,32 @@ export function Post() {
                 </PostHeader>
 
                 <PostBody>
+                    {/* <MarkDownContent children={currentPost.body} remarkPlugins={[remarkGfm]} /> */}
 
-                    <ReactMarkdown>{currentPost.body}</ReactMarkdown>
-
+                    <MarkDownContent
+                        children={currentPost.body}
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                            code({ node, inline, className, style, children, ...props }) {
+                                const match = /language-(\w+)/.exec(className || '');
+                                return !inline && match ? (
+                                    <SyntaxHighlighter
+                                        style={solarizedlight}
+                                        customStyle={{ background: '#0B1B2B' }}
+                                        language={match[1]}
+                                        PreTag="div"
+                                        {...props}
+                                    >
+                                        {String(children).replace(/\n$/, '')}
+                                    </SyntaxHighlighter>
+                                ) : (
+                                    <code className={className} {...props}>
+                                        {children}
+                                    </code>
+                                );
+                            },
+                        }}
+                    />
                 </PostBody>
 
             </PostContainer >

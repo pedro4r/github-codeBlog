@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import ReactMarkdown from 'react-markdown'
 
 export const PostContainer = styled.div`
     display: flex;
@@ -76,5 +77,17 @@ export const Info = styled.div`
 `
 
 export const PostBody = styled.div`
-    color: ${(props => props.theme['gray-300'])}
+    color: ${(props => props.theme['gray-300'])};
+`
+
+export const MarkDownContent = styled(ReactMarkdown)`
+    white-space: pre-line;
+
+    ul, ol {
+        padding-left: 2rem;
+    }
+
+    p {
+        text-align: justify;
+    }
 `
