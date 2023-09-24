@@ -1,4 +1,4 @@
-import { Route, Routes, useParams } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { DefaultLayout } from "./layouts/DefaultLayout";
 import { Home } from "./Pages/Home";
 import { Post } from "./Pages/Post";
