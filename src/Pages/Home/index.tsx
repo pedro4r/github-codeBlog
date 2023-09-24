@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useContext } from "react";
 import { IssuesContext } from "../../context/IssuesContext";
 import { ArrowSquareOut, Buildings, GithubLogo, Users } from "phosphor-react";
-import { formatDistanceToNow, formatDistanceToNowStrict } from "date-fns";
+import { formatDistanceToNowStrict } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { Link } from "react-router-dom";
 
