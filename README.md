@@ -9,7 +9,7 @@ To utilize our application, follow these simple steps:
 # 1. Clone the Repository:
 Begin by cloning our design system's repository to your local machine:
 ``
-git clone https://github.com/pedro4r/jupiter-ui
+git clone https://github.com/pedro4r/github-codeBlog
 ``
 
 ## 2. Install Dependencies:
